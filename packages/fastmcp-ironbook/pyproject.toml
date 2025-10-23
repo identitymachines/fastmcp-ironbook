@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fastmcp-ironbook"
+version = "0.1.0"
+description = "Iron Book agent-based security integration for FastMCP servers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Identity Machines", email = "support@identitymachines.com"}
+]
+keywords = ["fastmcp", "ironbook", "mcp", "security", "policy", "authorization"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "fastmcp>=0.2.0",
+    "ironbook-sdk>=0.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/identitymachines/fastmcp-ironbook"
+Documentation = "https://github.com/identitymachines/fastmcp-ironbook#readme"
+Repository = "https://github.com/identitymachines/fastmcp-ironbook"
+Issues = "https://github.com/identitymachines/fastmcp-ironbook/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fastmcp_ironbook"]
+

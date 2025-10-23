@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "healthcare-server": {
+      "command": "python",
+      "args": ["/absolute/path/to/fastmcp-ironbook/examples/healthcare/server.py"],
+      "env": {
+        "IRONBOOK_API_KEY": "your_ironbook_api_key_here",
+        "IRONBOOK_BASE_URL": "https://api.ironbook.identitymachines.com"
+      }
+    }
+  }
+}
+
