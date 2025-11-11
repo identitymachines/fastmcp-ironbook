@@ -54,9 +54,13 @@ def extract_agent_capabilities(client_info_cache: dict, agent_name: str) -> list
     if mcp_client and "capabilities" in mcp_client:
         mcp_capabilities = mcp_client["capabilities"]
         if mcp_capabilities:
-            capability_list = list(mcp_capabilities.keys())
-            logger.info(f"Using MCP capabilities: {capability_list}")
-            return capability_list
+            # Ensure capabilities is a dict
+            if isinstance(mcp_capabilities, dict):
+                capability_list = list(mcp_capabilities.keys())
+                logger.info(f"Using MCP capabilities: {capability_list}")
+                return capability_list
+            else:
+                logger.warning(f"Capabilities is not a dict type: {type(mcp_capabilities)}")
     
     logger.warning(f"No MCP capabilities found for agent {agent_name}")
     return []

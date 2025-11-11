@@ -65,7 +65,6 @@ async def enforce_policy(
     
     full_context = context or {}
     full_context["agent_name"] = agent_info.get("agent_name")
-    full_context["capabilities"] = agent_info.get("capabilities", [])
     
     policy_input = PolicyInput(
         agent_did=agent_info["agent_did"],

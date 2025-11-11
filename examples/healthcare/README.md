@@ -16,7 +16,7 @@ This example shows how to build a secure healthcare data server using FastMCP an
 
 1. **Python 3.10+**
 2. **Iron Book Account**
-   - Sign up at [https://console.ironbook.identitymachines.com](https://ironbook.identitymachines.com)
+   - Sign up at [https://ironbook.identitymachines.com](https://ironbook.identitymachines.com)
    - Create an API key
 3. **MCP Client** (Cursor, Claude Desktop, or compatible)
 
@@ -214,7 +214,7 @@ Stricter policy for prescription writing.
 
 ### Uploading Policies to Iron Book
 
-1. Log in to [Iron Book Console](https://console.ironbook.identitymachines.com)
+1. Log in to [Iron Book Portal](https://ironbook.identitymachines.com)
 2. Navigate to Policies section
 3. Create a new policy:
    - **Name**: `healthcare-policy`
@@ -327,7 +327,7 @@ Every action is logged by Iron Book:
 - Timestamp
 - Context data
 
-View logs in the [Iron Book Console](https://console.ironbook.identitymachines.com) under Audit Logs.
+View logs in the [Iron Book Portal](https://ironbook.identitymachines.com) under Audit Logs.
 
 ## Customization
 
@@ -380,7 +380,7 @@ Update policy IDs in `server.py`:
 ## Resources
 
 - [fastmcp-ironbook Package Documentation](../../packages/fastmcp-ironbook/README.md)
-- [Iron Book Console](https://console.ironbook.identitymachines.com)
+- [Iron Book Portal](https://ironbook.identitymachines.com)
 - [Iron Book Documentation](https://docs.identitymachines.com)
 - [MCP Specification](https://modelcontextprotocol.io)
 

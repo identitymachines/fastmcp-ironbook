@@ -112,7 +112,7 @@ async def get_patient_record(patient_id: str) -> dict:
         "dosage": prescription.get("dosage"),
         "risk_level": "high" if prescription.get("controlled", False) else "standard"
     },
-    policy_id="policy_prescriptions_xyz123"  # Stricter policy for prescriptions
+    policy_id="policy_a4e4d26bdbfa4c57bc52a67952500cc7"  # Stricter policy for prescriptions
 )
 async def write_prescription(patient_id: str, prescription: dict) -> dict:
     """

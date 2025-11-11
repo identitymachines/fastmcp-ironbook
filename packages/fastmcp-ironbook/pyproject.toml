@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Identity Machines", email = "support@identitymachines.com"}
+    {name = "Identity Machines", email = "devops@identitymachines.com"}
 ]
 keywords = ["fastmcp", "ironbook", "mcp", "security", "policy", "authorization"]
 classifiers = [

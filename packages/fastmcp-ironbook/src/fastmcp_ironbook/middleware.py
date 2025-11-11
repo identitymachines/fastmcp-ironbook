@@ -33,26 +33,45 @@ class ClientInfoMiddleware(Middleware):
         call_next: CallNext[mt.InitializeRequestParams, None],
     ) -> None:
         """Capture clientInfo and capabilities from MCP initialization"""
-        params = context.message.params
-        client_info = params.clientInfo if params.clientInfo else {}
-        capabilities = params.capabilities if params.capabilities else {}
-        
-        if client_info:
-            client_name = client_info.name if hasattr(client_info, 'name') else ""
-            client_version = client_info.version if hasattr(client_info, 'version') else ""
+        try:
+            params = context.message.params
+            client_info = params.clientInfo if params.clientInfo else None
+            capabilities = params.capabilities if params.capabilities else None
             
-            logger.info(
-                f"MCP Initialize: Client connected - {client_name or 'unnamed'} "
-                f"v{client_version or 'unknown'} with capabilities: {list(capabilities.keys()) if capabilities else 'none'}"
-            )
+            # Convert capabilities object to dict for easier handling
+            capabilities_dict = {}
+            if capabilities:
+                try:
+                    # Try to convert to dict using vars() or model_dump()
+                    if hasattr(capabilities, 'model_dump'):
+                        capabilities_dict = capabilities.model_dump()
+                    elif hasattr(capabilities, 'dict'):
+                        capabilities_dict = capabilities.dict()
+                    else:
+                        # Fallback: extract attributes
+                        capabilities_dict = {k: v for k, v in vars(capabilities).items() if not k.startswith('_')}
+                except Exception as e:
+                    logger.warning(f"Could not convert capabilities to dict: {e}")
             
-            if client_name:
-                self.cache["default"] = {
-                    "name": client_name,
-                    "version": client_version or None,
-                    "capabilities": capabilities
-                }
-                logger.info(f"Cached MCP client info: {client_name} v{client_version}")
+            if client_info:
+                client_name = client_info.name if hasattr(client_info, 'name') else ""
+                client_version = client_info.version if hasattr(client_info, 'version') else ""
+                
+                capability_names = list(capabilities_dict.keys()) if capabilities_dict else []
+                logger.info(
+                    f"MCP Initialize: Client connected - {client_name or 'unnamed'} "
+                    f"v{client_version or 'unknown'} with capabilities: {capability_names or 'none'}"
+                )
+                
+                if client_name:
+                    self.cache["default"] = {
+                        "name": client_name,
+                        "version": client_version or None,
+                        "capabilities": capabilities_dict
+                    }
+                    logger.info(f"Cached MCP client info: {client_name} v{client_version}")
+        except Exception as e:
+            logger.warning(f"Failed to validate request: {e}")
         
         return await call_next(context)
 
