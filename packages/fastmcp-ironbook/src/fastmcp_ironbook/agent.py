@@ -89,16 +89,28 @@ async def get_or_register_agent(
     """
     agent_name, agent_key, client_version, identification_method = identify_agent(client_info_cache)
     
+    # Fetch organization settings to get org ID
+    try:
+        org_settings = await ironbook_client.get_org_settings()
+        org_id = org_settings.org_id
+        # Append org ID to agent name for better identification
+        agent_name_with_org = f"{agent_name}-{org_id}"
+        logger.info(f"Organization ID retrieved: {org_id}, agent name updated to: {agent_name_with_org}")
+    except Exception as e:
+        logger.warning(f"Failed to fetch org settings: {e}. Using agent name without org ID.")
+        agent_name_with_org = agent_name
+        org_id = None
+    
     if agent_key in agent_registry:
-        logger.info(f"Using cached agent registration for {agent_name}")
+        logger.info(f"Using cached agent registration for {agent_name_with_org}")
         return agent_registry[agent_key].copy()
     
-    logger.info(f"Registering new agent: {agent_name}")
+    logger.info(f"Registering new agent: {agent_name_with_org}")
     
-    capabilities = extract_agent_capabilities(client_info_cache, agent_name)
+    capabilities = extract_agent_capabilities(client_info_cache, agent_name_with_org)
     
     register_options = RegisterAgentOptions(
-        agent_name=agent_name,
+        agent_name=agent_name_with_org,
         capabilities=capabilities,
         developer_did=developer_did
     )
@@ -110,10 +122,11 @@ async def get_or_register_agent(
             "agent_did": registered["agentDid"],
             "developer_did": registered["developerDid"],
             "vc": registered["vc"],
-            "agent_name": agent_name,
+            "agent_name": agent_name_with_org,
             "agent_version": client_version,
             "capabilities": capabilities,
             "identification_method": identification_method,
+            "org_id": org_id,
         }
         agent_registry[agent_key] = agent_info
         
@@ -127,10 +140,10 @@ async def get_or_register_agent(
         error_msg = str(e)
         
         if "already exists" in error_msg.lower() or "409" in error_msg:
-            logger.warning(f"Agent {agent_name} already registered with Iron Book")
-            logger.info(f"Fetching existing agent details from Iron Book for {agent_name}")
+            logger.warning(f"Agent {agent_name_with_org} already registered with Iron Book")
+            logger.info(f"Fetching existing agent details from Iron Book for {agent_name_with_org}")
             
-            filtered_agent_name = ''.join(c for c in agent_name if c.isalnum())
+            filtered_agent_name = ''.join(c for c in agent_name_with_org if c.isalnum())
             agent_did = f"did:web:agents.identitymachines.com:{filtered_agent_name}"
             
             logger.info(f"Attempting to fetch agent with DID: {agent_did}")
@@ -144,17 +157,18 @@ async def get_or_register_agent(
                     "agent_did": existing_agent.did,
                     "developer_did": existing_agent.developer_did or developer_did,
                     "vc": existing_agent.vc,
-                    "agent_name": agent_name,
+                    "agent_name": agent_name_with_org,
                     "agent_version": client_version,
                     "capabilities": capabilities,
                     "identification_method": identification_method,
                     "trust_score": existing_agent.trust_score,
                     "status": existing_agent.status,
+                    "org_id": org_id,
                     "note": "Fetched existing agent from Iron Book with valid VC"
                 }
                 agent_registry[agent_key] = agent_info
                 
-                logger.info(f"Policy enforcement available for {agent_name} with fetched VC")
+                logger.info(f"Policy enforcement available for {agent_name_with_org} with fetched VC")
                 return agent_info
                 
             except Exception as fetch_error:
@@ -165,10 +179,11 @@ async def get_or_register_agent(
                     "agent_did": agent_did,
                     "developer_did": developer_did,
                     "vc": None,
-                    "agent_name": agent_name,
+                    "agent_name": agent_name_with_org,
                     "agent_version": client_version,
                     "capabilities": capabilities,
                     "identification_method": identification_method,
+                    "org_id": org_id,
                     "note": f"Agent exists in Iron Book but fetch failed: {str(fetch_error)}. Policy enforcement disabled.",
                     "policy_enforcement_available": False
                 }

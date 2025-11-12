@@ -48,7 +48,7 @@ fastmcp_ironbook.setup(
     ironbook_client=ironbook,
     client_info_cache=mcp_client_info_cache,
     agent_registry=agent_registry,
-    default_policy_id="policy_a4e4d26bdbfa4c57bc52a67952500cc7"  # Default healthcare policy
+    default_policy_id="policy_8fee1085ff1c4a8f84174952aa3ee7a8"  # Default healthcare policy
 )
 
 
@@ -86,7 +86,7 @@ async def get_patient_record(patient_id: str) -> dict:
     # In a real system, this would fetch from a secure database
     # For demo purposes, we return mock data
     
-    logger.info(f"Accessing medical record for patient: {patient_id}")
+    logger.info(f"Accessing medical record for patient with new agent: {patient_id}")
     
     return {
         "patient_id": patient_id,
@@ -112,7 +112,7 @@ async def get_patient_record(patient_id: str) -> dict:
         "dosage": prescription.get("dosage"),
         "risk_level": "high" if prescription.get("controlled", False) else "standard"
     },
-    policy_id="policy_a4e4d26bdbfa4c57bc52a67952500cc7"  # Stricter policy for prescriptions
+    policy_id="policy_8fee1085ff1c4a8f84174952aa3ee7a8"  # Stricter policy for prescriptions
 )
 async def write_prescription(patient_id: str, prescription: dict) -> dict:
     """
