@@ -1,6 +1,6 @@
 git+https://github.com/jlowin/fastmcp.git@v2.13.0rc2#egg=fastmcp
 python-dotenv>=1.0.0
-ironbook-sdk>=0.3.0
+ironbook-sdk>=0.3.3
 websockets>=15.0.1
 wsproto>=1.2.0
 

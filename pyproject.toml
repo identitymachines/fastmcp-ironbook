@@ -7,7 +7,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "fastmcp>=0.1.0",
-    "ironbook-sdk>=0.3.2",
+    "ironbook-sdk>=0.3.3",
 ]
 
 [build-system]

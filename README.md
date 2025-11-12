@@ -184,7 +184,7 @@ Same tools, different policies based on environment
 
 - Python >= 3.10
 - fastmcp >= 0.2.0
-- ironbook-sdk >= 0.3.0
+- ironbook-sdk >= 0.3.3
 
 ## Contributing
 
