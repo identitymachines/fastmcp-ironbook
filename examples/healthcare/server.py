@@ -48,7 +48,7 @@ fastmcp_ironbook.setup(
     ironbook_client=ironbook,
     client_info_cache=mcp_client_info_cache,
     agent_registry=agent_registry,
-    default_policy_id="policy_8fee1085ff1c4a8f84174952aa3ee7a8"  # Default healthcare policy
+    default_policy_id="policy_3fd840c2e4e1425d8752d6ec8af8d624"  # Default healthcare policy
 )
 
 
@@ -112,7 +112,7 @@ async def get_patient_record(patient_id: str) -> dict:
         "dosage": prescription.get("dosage"),
         "risk_level": "high" if prescription.get("controlled", False) else "standard"
     },
-    policy_id="policy_8fee1085ff1c4a8f84174952aa3ee7a8"  # Stricter policy for prescriptions
+    policy_id="policy_3fd840c2e4e1425d8752d6ec8af8d624"  # Stricter policy for prescriptions
 )
 async def write_prescription(patient_id: str, prescription: dict) -> dict:
     """
